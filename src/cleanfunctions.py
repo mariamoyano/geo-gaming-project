@@ -25,10 +25,10 @@ def clean(db):
     companydata =pd.concat([companydata,officesdf],axis=1)
     cleaned_offices = companydata.apply(officeToGeoPoint,axis=1, result_type="expand")
     cleaned_offices.columns = ["office","clean_state"]   
-    company_processed = pd.concat([companydata,cleaned_offices], axis=1)
-    company_processed = company_processed[["name","category_code","office","clean_state","city","country_code","latitude","longitude","total_money_raised"]]
-    company_processed = company_processed.drop(company_processed[company_processed["clean_state"]=="Invalid lat lat and long"].index)
-    company_processed = company_processed.drop(company_processed[company_processed["clean_state"]=="No office"].index)
+    data_cleaned = pd.concat([companydata,cleaned_offices], axis=1)
+    data_cleaned = data_cleaned[["name","category_code","office","clean_state","city","country_code","latitude","longitude","total_money_raised"]]
+    data_cleaned = data_cleaned.drop(data_cleaned[data_cleaned["clean_state"]=="Invalid lat lat and long"].index)
+    company_processed = data_cleaned.drop(data_cleaned[data_cleaned["clean_state"]=="No office"].index)
     company_processed.to_json("OUTPUT/companies_clean.json",orient="records")
     return company_processed
 
